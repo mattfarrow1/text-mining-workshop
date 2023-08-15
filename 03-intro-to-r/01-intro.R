@@ -13,14 +13,20 @@ library(palmerpenguins)
 
 # Look at the data. If you don't want to load the entire library, you can call
 # just one function by using package_name::function_name
-palmerpenguins::penguins 
+head(palmerpenguins::penguins)
 
 # You'll notice there are 344 rows and 8 columns. Everything doesn't fit nicely
-# in the console, but there are several different ways to look at the data.
-view(penguins)
-str(penguins)
-glimpse(penguins)
+# in the console, but we'll look at some other ways to view the data in a
+# minute. For now, here is how you can view the names of the columns/variables.
 colnames(penguins)
+
+# dplyr offers the `glimpse` function which offers a more readable format than
+# `head` in the console
+glimpse(penguins)
+
+# Two additional ways that you can view the data are `str` and `view`.
+str(penguins)
+view(penguins)
 
 # What if we want to find out which species are included in the data?
 unique(penguins$species)
