@@ -56,13 +56,15 @@ penguins |>
 
 # Using boolean operators
 penguins |> 
-  filter(bill_length_mm > 40)
+  filter(bill_length_mm < 40)
 penguins |> 
   filter(bill_length_mm >= 40)
 
 # By missing values
+# Flipper length is missing/blank
 penguins |> 
   filter(is.na(flipper_length_mm))
+# Flipper length is NOT missing/blank
 penguins |> 
   filter(!is.na(flipper_length_mm))
 
@@ -78,15 +80,22 @@ penguins |>
 # function from dplyr to create our buckets. Finally, we'll select only the
 # original flipper length in mm and the new bucket columns and look at the first
 # observations using `head`
-penguins |>
+flippers <- penguins |>
   mutate(flipper_length = case_when(
     flipper_length_mm < 190 ~ "short",
     flipper_length_mm >= 190 &
       flipper_length_mm < 213 ~ "average",
     flipper_length_mm > 213 ~ "long"
-  )) |>
+  )) 
+
+flippers |>
   select(flipper_length_mm, flipper_length) |>
   head()
+
+# If we want to count the number of penguins by flipper length, we can use the
+# `count` function
+flippers |> 
+  count(flipper_length)
 
 # Finally let's look at the average flipper length by species. First we'll group
 # by the species and then summarise by the mean (average) flipper length
@@ -101,24 +110,3 @@ penguins |>
 penguins |> 
   group_by(species) |> 
   summarise(avg_flipper_length = mean(flipper_length_mm, na.rm = TRUE))
-
-# Intro to ggplot2 --------------------------------------------------------
-
-# We looked at a plot briefly earlier, but let's do a little more plotting so
-# that you have a general understanding of how it works
-penguins |> 
-  ggplot(aes(flipper_length_mm)) +
-  geom_bar() 
-
-penguins |> 
-  ggplot(aes(bill_length_mm,
-             flipper_length_mm,
-             color = species)) +
-  geom_point(size = 3, alpha = 0.4) +
-  labs(title = "Bill vs. Flipper Length",
-       subtitle = "by species",
-       x = "Bill Length (mm)",
-       y = "Flipper Length (mm)",
-       color = "") +
-  theme_minimal()
-
